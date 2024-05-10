@@ -18,6 +18,7 @@ enum {
 extern ADC_HandleTypeDef hadc1;
 extern DMA_HandleTypeDef hdma_adc1;
 extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim17;
 
 volatile int32_t target_position = 0;
 volatile int32_t max_pwm = 6000;
@@ -33,10 +34,16 @@ volatile int32_t control_i_max = 8192;
 
 
 
+extern int32_t encoder_speed;
+extern int32_t encoder_speed_raw;
+
+
 extern int32_t as5600_angle;
 
 
 void application_setup() {
+
+	HAL_TIM_Base_Start(&htim17); //counts 10us per tick
 
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
@@ -87,5 +94,14 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 		htim3.Instance->CCR1 = pwm;
 		htim3.Instance->CCR2 = 0;
 	}
+
+
+
+
+	//calculate speed
+	static int32_t encoder_speed_filter = 0;
+	encoder_speed_filter = (encoder_speed_filter * 127 + encoder_speed_raw) / 128;
+	encoder_speed = encoder_speed_filter / 256;
+	encoder_speed_raw = (encoder_speed_raw * 7) / 8; //decay;
 }
 

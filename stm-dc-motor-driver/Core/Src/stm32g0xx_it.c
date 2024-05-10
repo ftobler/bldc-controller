@@ -44,8 +44,11 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 int32_t encoder_position = 0;
+int32_t encoder_speed = 0;
+int32_t encoder_speed_raw = 0;
 static uint32_t last_A = 0;
 static uint32_t last_B = 0;
+extern TIM_HandleTypeDef htim17;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -157,6 +160,13 @@ void EXTI4_15_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
   /* USER CODE BEGIN EXTI4_15_IRQn 1 */
 #endif
+
+	//get the speed from the timer
+	//timer counts up every 10us
+	int32_t timer_ticks = htim17.Instance->CNT;
+	htim17.Instance->CNT = 0;
+
+
 	int32_t increment = 0;
 	if (__HAL_GPIO_EXTI_GET_RISING_IT(GPIO_PIN_4)) {
 		__HAL_GPIO_EXTI_CLEAR_RISING_IT(GPIO_PIN_4);
@@ -195,6 +205,14 @@ void EXTI4_15_IRQHandler(void)
 		}
 	}
 	encoder_position += increment;
+//    int32_t encoder_speed_raw = 0;
+	if (increment > 0) {
+		//forward
+		encoder_speed_raw = +0xFFFFFFF / timer_ticks;
+	} else {
+		//backward
+		encoder_speed_raw = -0xFFFFFFF / timer_ticks;
+	}
   /* USER CODE END EXTI4_15_IRQn 1 */
 }
 
