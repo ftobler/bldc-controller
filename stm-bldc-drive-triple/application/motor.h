@@ -10,6 +10,9 @@
 
 #include "stm32_hal.h"
 
+
+void motor_sintab_init();
+
 class Motor {
 private:
 public:
@@ -18,8 +21,18 @@ public:
 	uint16_t en_pin; //enable pin
 	uint32_t dma_index; //index of the sensor feedback
 	uint32_t hall_value;
+
+	int32_t target;
+
+	int32_t t = 0;
+	uint32_t do_calibrate = 0;
+
+	float coef_a = 0.0f;
+	float coef_b = 0.0f;
 	Motor();
 	void update();
+	void calibrate();
+	void assign_angle(uint32_t power, int32_t angle);
 };
 
 #endif /* MOTOR_H_ */

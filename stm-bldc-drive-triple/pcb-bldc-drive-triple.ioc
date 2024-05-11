@@ -1,19 +1,15 @@
 #MicroXplorer Configuration settings - do not modify
-ADC1.Channel-2\#ChannelRegularConversion=ADC_CHANNEL_10
 ADC1.ContinuousConvMode=ENABLE
 ADC1.DMAContinuousRequests=ENABLE
 ADC1.EOCSelection=ADC_EOC_SEQ_CONV
-ADC1.IPParameters=Rank-2\#ChannelRegularConversion,Channel-2\#ChannelRegularConversion,SamplingTime-2\#ChannelRegularConversion,NbrOfConversionFlag,ContinuousConvMode,DMAContinuousRequests,SamplingTimeCommon1,SamplingTimeCommon2,Overrun,EOCSelection,OversamplingMode,Ratio,RightBitShift,master,SelectedChannel
-ADC1.NbrOfConversionFlag=1
+ADC1.IPParameters=NbrOfConversionFlag,ContinuousConvMode,DMAContinuousRequests,SamplingTimeCommon1,Overrun,EOCSelection,OversamplingMode,master,SelectedChannel,NbrOfConversion,Sequencer
+ADC1.NbrOfConversion=1
+ADC1.NbrOfConversionFlag=0
 ADC1.Overrun=ADC_OVR_DATA_OVERWRITTEN
-ADC1.OversamplingMode=ENABLE
-ADC1.Rank-2\#ChannelRegularConversion=1
-ADC1.Ratio=ADC_OVERSAMPLING_RATIO_8
-ADC1.RightBitShift=ADC_RIGHTBITSHIFT_2
-ADC1.SamplingTime-2\#ChannelRegularConversion=ADC_SAMPLINGTIME_COMMON_1
+ADC1.OversamplingMode=DISABLE
 ADC1.SamplingTimeCommon1=ADC_SAMPLETIME_19CYCLES_5
-ADC1.SamplingTimeCommon2=ADC_SAMPLETIME_19CYCLES_5
 ADC1.SelectedChannel=ADC_CHANNEL_4|ADC_CHANNEL_5|ADC_CHANNEL_10|ADC_CHANNEL_11
+ADC1.Sequencer=NOT_FULLY_CONFIGURABLE
 ADC1.master=1
 CAD.formats=
 CAD.pinconfig=
