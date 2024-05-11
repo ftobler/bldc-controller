@@ -43,7 +43,11 @@ void taskmanager_init() {
 
 static void idle_task_fn() {
 	while (1) {
-		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, (GPIO_PinState)((uwTick % 500) > 250));
+		uint32_t looper = uwTick % 512;
+		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, (GPIO_PinState)(looper < 128*0 && looper > 128*1));
+		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, (GPIO_PinState)(looper < 128*1 && looper > 128*2));
+		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, (GPIO_PinState)(looper < 128*2 && looper > 128*3));
+		HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, (GPIO_PinState)(looper < 128*3 && looper > 128*0));
 		as5600_poll();
 	}
 }

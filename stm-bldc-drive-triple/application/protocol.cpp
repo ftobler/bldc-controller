@@ -26,7 +26,7 @@ static uint8_t uart_receive[256];
 
 void protocol_init() {
 	HAL_UART_ReceiverTimeout_Config(&huart2, 40); //transmission timeout timer value. based on baudrate. for 3.5words use 3.5*11bit = 38.5
-	HAL_UART_EnableReceiverTimeout(&huart2);
+	HAL_UART_EnableReceiverTimeout(&huart2); //UART 2 goes to CH340/USB
 	serial.init(&huart2);
 	serial.hook_end_transmission_modbus = hook_end_transmission;
 

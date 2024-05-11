@@ -52,6 +52,10 @@ void SVC_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 void TIM15_IRQHandler(void);
+void I2C1_IRQHandler(void);
+void I2C2_IRQHandler(void);
+void USART1_IRQHandler(void);
+void USART2_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
