@@ -12,9 +12,10 @@
 extern "C" {
 #endif
 
+constexpr int PWM_MAX = 3200; //20kHz
+
 void application_setup();
 void application_loop();
-void control_loop();
 
 #ifdef __cplusplus
 }

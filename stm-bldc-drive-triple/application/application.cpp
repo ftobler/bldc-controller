@@ -14,8 +14,7 @@
 #include "motor.h"
 #include "math.h"
 
-enum {
-};
+
 
 
 uint32_t adc_dma_results[4];
@@ -32,6 +31,7 @@ extern TIM_HandleTypeDef htim15;
 Motor motors[3];
 
 int32_t vcc_mv = 0;
+volatile uint32_t do_calibrate[3] = {1, 1, 1};
 
 
 extern Database_value_t database_value;
@@ -46,7 +46,9 @@ void application_setup() {
 	motors[0].en_port = ENABLE_M1_GPIO_Port;
 	motors[0].en_pin = ENABLE_M1_Pin;
 	motors[0].dma_index = 0;
-	motors[0].do_calibrate = 1;
+	motors[0].coef_a = 1.75f;
+	motors[0].coef_b = -291.763092f;
+	motors[0].calibrated = 1;
 	//configure motor 1 struct
 	motors[1].pwm[0] = &(htim3.Instance->CCR4);
 	motors[1].pwm[1] = &(htim3.Instance->CCR3);
@@ -54,6 +56,10 @@ void application_setup() {
 	motors[1].en_port = ENABLE_M2_GPIO_Port;
 	motors[1].en_pin = ENABLE_M2_Pin;
 	motors[1].dma_index = 1;
+	motors[1].coef_a = 1.75f;
+	motors[1].coef_b = -359.899902f;
+	motors[1].calibrated = 1;
+	motors[1].reverse_field();
 	//configure motor 2 struct
 	motors[2].pwm[0] = &(htim3.Instance->CCR1);
 	motors[2].pwm[1] = &(htim15.Instance->CCR2);
@@ -61,12 +67,16 @@ void application_setup() {
 	motors[2].en_port = ENABLE_M3_GPIO_Port;
 	motors[2].en_pin = ENABLE_M3_Pin;
 	motors[2].dma_index = 2;
+	motors[2].reverse_field();
+	motors[2].coef_a = 1.75f;
+	motors[2].coef_b = -658.282288f;
+	motors[2].calibrated = 1;
 
 	//start the timers, start pwm, one timer in interrupt mode.
 	HAL_TIM_Base_Start(&htim1);
 	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim15);
-	htim15.Instance->ARR = 6400-1; //10kHz
+	htim15.Instance->ARR = PWM_MAX-1;
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
@@ -85,27 +95,35 @@ void application_setup() {
 
 	//switch PWM on
 	for (int i = 0; i < 3; i++) {
-		*motors[i].pwm[0] = i * 300 + 100;
-		*motors[i].pwm[1] = i * 300 + 200;
-		*motors[i].pwm[2] = i * 300 + 300;
+//		*motors[i].pwm[0] = i * 300 + 100;
+//		*motors[i].pwm[1] = i * 300 + 200;
+//		*motors[i].pwm[2] = i * 300 + 300;
 		motors[i].en_port->BSRR = motors[i].en_pin;
 	}
 
 }
 
 __attribute__((optimize("Ofast"))) void application_loop() {
+
+
+
+	//update all motors
 	for (int i = 0; i < 3; i++) {
-		Motor* motor = &motors[i];
-		//motor->hall_value = adc_dma_results[motor->dma_index];
-		motor->update();
+		if (do_calibrate[i]) {
+			motors[i].calibrate();
+			do_calibrate[i] = 0;
+		}
+		motors[i].update();
 	}
+
+	//calculate vcc
 	vcc_mv = adc_dma_results[3] * 33000 / 4096;
 
-	//motors[0].target = 2000 + 1500*sinf(uwTick / 100.0f);
+	motors[0].target = 2000 + 500*sinf(uwTick / 500.0f);
+	motors[1].target = 2000 + 500*sinf((uwTick+167) / 500.0f);
+	motors[2].target = 2000 + 500*sinf((uwTick+333) / 500.0f);
 
 }
 
 
-__attribute__((optimize("Ofast"))) void control_loop() {
 
-}

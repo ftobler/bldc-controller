@@ -20,12 +20,10 @@ public:
 	volatile GPIO_TypeDef* en_port; //enable port
 	uint16_t en_pin; //enable pin
 	uint32_t dma_index; //index of the sensor feedback
-	uint32_t hall_value;
 
 	int32_t target;
+	uint32_t calibrated = 0;
 
-	int32_t t = 0;
-	uint32_t do_calibrate = 0;
 
 	float coef_a = 0.0f;
 	float coef_b = 0.0f;
@@ -33,6 +31,7 @@ public:
 	void update();
 	void calibrate();
 	void assign_angle(uint32_t power, int32_t angle);
+	void reverse_field();
 };
 
 #endif /* MOTOR_H_ */

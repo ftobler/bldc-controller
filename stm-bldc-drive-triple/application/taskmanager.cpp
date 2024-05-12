@@ -49,7 +49,7 @@ static void idle_task_fn() {
 		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, (GPIO_PinState)(looper > 128*1 && looper < 128*2));
 		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, (GPIO_PinState)(looper > 128*2 && looper < 128*3));
 		HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, (GPIO_PinState)(looper > 128*3 && looper < 128*4));
-		as5600_poll();
+		//as5600_poll();
 	}
 }
 
@@ -58,7 +58,6 @@ static void application_task_fn() {
 	application_setup();
 	while (1) {
 		scheduler_event_wait(EVENT_APPLICATION_TIMER);
-		//control_loop();
 		application_loop();
 	}
 }
