@@ -15,6 +15,7 @@ void motor_sintab_init();
 
 class Motor {
 private:
+	int32_t integrator;
 public:
 	volatile uint32_t* pwm[3]; //pointer to pwm registers
 	volatile GPIO_TypeDef* en_port; //enable port

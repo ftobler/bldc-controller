@@ -21,6 +21,13 @@ constexpr int pwm_max_half = (PWM_MAX / 2) - 1;
 extern int16_t sintab[N];
 extern uint32_t adc_dma_results[4];
 
+static int32_t controller_p = 2;
+static int32_t controller_i = 1;
+static int32_t controller_i_max = 200000;
+static float mean_error = 0;
+
+//static int absi(int i);
+
 
 Motor::Motor() {
 	coef_a = 1.75f;
@@ -38,7 +45,21 @@ __attribute__((optimize("Ofast"))) void Motor::update() {
 	int32_t encoder_raw = adc_dma_results[dma_index];
 	encoder = encoder_raw - offset;
 	int32_t error = target - encoder;
-	int32_t output = error * 2;
+
+	mean_error = mean_error * 0.99999f + error*error*0.00001f;
+
+	int32_t proportional = error * controller_p;
+	int32_t integrator_tmp = integrator + error;
+	int32_t integrator_max_tmp = controller_i_max;
+	if (integrator_tmp > integrator_max_tmp) {
+		integrator_tmp = integrator_max_tmp;
+	}
+	if (integrator_tmp < -integrator_max_tmp) {
+		integrator_tmp = -integrator_max_tmp;
+	}
+	integrator = integrator_tmp;
+
+	int32_t output = proportional + (integrator_tmp * controller_i / 1024);
 
 //	int32_t w = coef_a * encoder_raw + coef_b;
 	int32_t w = ((encoder_raw * 7) / 4) + coef_b; //coef A is 1.75 in theory
@@ -65,40 +86,73 @@ void Motor::calibrate() {
 	//find the maximum hard endstop point => run motor forwards
 	int w = 0; //phase angle omega
 	int maximum_sensor = 0;
+	float tp_sensor = 4096.0f; //tp filtering of the sensor
 	int max_cnt = 0;
+
 	while (1) {
 		assign_angle(pwm, w);
 		scheduler_task_sleep(1);
 		int sensor = get_encoder();
+		tp_sensor = sensor * 0.1f + tp_sensor * 0.9f;
+		float mean_change = sensor - tp_sensor; //mean change of the sensor between tries.
 		if (maximum_sensor < sensor) {
 			maximum_sensor = sensor;
-			max_cnt = 0;
+//			max_cnt = 0;
 		} else {
+//			max_cnt++;
+		}
+//		if (mean_change*mean_change < 10.0f && max_cnt > N/2) {
+//			break;
+//		}
+		if (abs(sensor - maximum_sensor) < 10.0f && mean_change*mean_change < 20.0f) {
 			max_cnt++;
+			if (max_cnt > N/8) {
+				break;
+			}
+			w = w + 1;
+		} else {
+			max_cnt = 0;
+			w = w + 8;
 		}
-		if (max_cnt > N+50) {
-			break;
-		}
-		w = w + 8;
+//		if (max_cnt > N+50) {
+//			break;
+//		}
 	}
 	//find the minimum hard endstop point => run motor backwards
 	w = 0;
 	int minimum_sensor = 4096;
 	max_cnt = 0;
+	tp_sensor = 0.0f;
 	while (1) {
 		assign_angle(pwm, w);
 		scheduler_task_sleep(1);
 		int sensor = get_encoder();
+		tp_sensor = sensor * 0.1f + tp_sensor * 0.9f;
+		float mean_change = sensor - tp_sensor; //mean change of the sensor between tries.
 		if (minimum_sensor > sensor) {
 			minimum_sensor = sensor;
-			max_cnt = 0;
+//			max_cnt = 0;
 		} else {
+//			max_cnt++;
+		}
+//		if (mean_change*mean_change < 10.0f && max_cnt > N/2) {
+//			break;
+//		}
+		if (abs(sensor - minimum_sensor) < 10.0f && mean_change*mean_change < 20.0f) {
 			max_cnt++;
+			if (max_cnt > N/8) {
+				break;
+			}
+			w = w - 1;
+		} else {
+			max_cnt = 0;
+			w = w - 8;
 		}
-		if (max_cnt > N+50) {
-			break;
-		}
-		w = w - 8;
+//		if (max_cnt > N+50) {
+//			break;
+//		}
+//		max_cnt++;
+//		w = w - 8;
 	}
 
 	//the two points correspond to the mechanical limit. offset them 35 (~3°) so there is a bit
@@ -222,3 +276,11 @@ void Motor::reverse_field() {
 	pwm[0] = pwm[2];
 	pwm[2] = tmp;
 }
+
+
+//static int abs(int i) {
+//	if (i > 0) {
+//		return i;
+//	}
+//	return -i;
+//}
