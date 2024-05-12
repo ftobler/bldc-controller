@@ -121,9 +121,15 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 //		motors[2].max_pwm = 900;
 //	}
 
-	motors[0].target = 1750 + 900*sine(uwTick / 150.0f);
-	motors[1].target = motors[0].encoder + 450*sine(uwTick / 50.0f);
-	motors[2].target = motors[1].encoder + 300*sine(uwTick / 30.0f);
+	if (motors[0].calibrated && motors[1].calibrated && motors[2].calibrated) {
+		motors[0].target = 1750 + 900*sine(uwTick / 150.0f);
+		motors[1].target = motors[0].encoder + 450*sine(uwTick / 50.0f);
+		motors[2].target = motors[1].encoder + 300*sine(uwTick / 30.0f);
+	} else {
+		motors[0].target = 1750;
+		motors[1].target = 1750;
+		motors[2].target = 1750;
+	}
 }
 
 
