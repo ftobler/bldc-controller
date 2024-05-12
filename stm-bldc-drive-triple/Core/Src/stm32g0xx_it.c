@@ -160,7 +160,43 @@ void TIM15_IRQHandler(void)
   /* USER CODE BEGIN TIM15_IRQn 1 */
 #endif
   __HAL_TIM_CLEAR_FLAG(&htim15, TIM_FLAG_UPDATE);
-  scheduler_event_set(TASK_ID_APPLICATION, EVENT_APPLICATION_TIMER);
+  static int i = 0;
+  if (i >= 3) {
+	  i = 0;
+	  static int j = 0;
+	  if (j >= 5) {
+		  j = 0;
+	  } else {
+		  j++;
+	  }
+	  scheduler_event_set_only(TASK_ID_APPLICATION, EVENT_APPLICATION_TIMER);
+	  scheduler_event_set_only(TASK_ID_MOTOR_0, EVENT_MOTOR_0_PWM);
+	  scheduler_event_set_only(TASK_ID_MOTOR_1, EVENT_MOTOR_1_PWM);
+	  scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_PWM);
+  } else {
+	  i++;
+  }
+//  switch (i) {
+//  case 0:
+//	  i = 1;
+//	  break;
+//  case 1:
+//	  i = 2;
+//	  break;
+//  default: //i == 2
+//	  i = 0;
+//  }
+
+//  static int i = 0;
+//  if (i) {
+//	  i = 0;
+//	  scheduler_event_set(TASK_ID_MOTOR_0, EVENT_MOTOR_0_PWM);
+//	  scheduler_event_set(TASK_ID_MOTOR_1, EVENT_MOTOR_1_PWM);
+//	  scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_PWM);
+//	  scheduler_event_set(TASK_ID_APPLICATION, EVENT_APPLICATION_TIMER);
+//  } else {
+//	  i = 1;
+//  }
   /* USER CODE END TIM15_IRQn 1 */
 }
 

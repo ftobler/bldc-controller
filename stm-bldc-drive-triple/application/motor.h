@@ -23,10 +23,15 @@ public:
 
 	int32_t target;
 	uint32_t calibrated = 0;
+	uint32_t max_pwm;
+	int32_t offset = 0; //0 position should be at mechanical zero
+	int32_t encoder;
 
 
+//	float coef_a = 0.0f;
+//	float coef_b = 0.0f;
 	float coef_a = 0.0f;
-	float coef_b = 0.0f;
+	int32_t coef_b = 0;
 	Motor();
 	void update();
 	void calibrate();

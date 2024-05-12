@@ -10,42 +10,38 @@
 #include "math.h"
 #include "flortos.h"
 #include "application.h"
+#include "sine.h"
 
-enum {
-	N = 1024,
-	N23 = 2 * N / 3,
-	SINMAX = 32768,
-};
+
+constexpr int pwm_max_half = (PWM_MAX / 2) - 1;
+
 
 #define get_encoder() (adc_dma_results[dma_index])
 
-static int16_t sintab[N];
+extern int16_t sintab[N];
 extern uint32_t adc_dma_results[4];
 
-void motor_sintab_init() {
-	for (int i = 0; i < N; i++) {
-		float a = (float)i / N * 2.0f * M_PI;
-		sintab[i] = sinf(a) * (SINMAX - 1);
-	}
-}
 
 Motor::Motor() {
 	coef_a = 1.75f;
 	coef_b = -280;
+	max_pwm = pwm_max_half;
 }
 
-void Motor::update() {
+__attribute__((optimize("Ofast"))) void Motor::update() {
 
 	if (calibrated == 0) {
 		assign_angle(0, 0);
 		return;
 	}
 
-	int32_t encoder = adc_dma_results[dma_index];
+	int32_t encoder_raw = adc_dma_results[dma_index];
+	encoder = encoder_raw - offset;
 	int32_t error = target - encoder;
-	int32_t output = error * 4;
+	int32_t output = error * 2;
 
-	int32_t w = coef_a * encoder + coef_b;
+//	int32_t w = coef_a * encoder_raw + coef_b;
+	int32_t w = ((encoder_raw * 7) / 4) + coef_b; //coef A is 1.75 in theory
 	if (error > 0) {
 		w += N / 4; //add 90deg
 	} else {
@@ -80,7 +76,7 @@ void Motor::calibrate() {
 		} else {
 			max_cnt++;
 		}
-		if (max_cnt > N+100) {
+		if (max_cnt > N+50) {
 			break;
 		}
 		w = w + 8;
@@ -99,7 +95,7 @@ void Motor::calibrate() {
 		} else {
 			max_cnt++;
 		}
-		if (max_cnt > N+100) {
+		if (max_cnt > N+50) {
 			break;
 		}
 		w = w - 8;
@@ -164,34 +160,35 @@ void Motor::calibrate() {
 	coef_a = (sum_xy * n - sum_x * sum_y) / (n * sum_x_squared - sum_x * sum_x);
 	coef_b = (sum_y * sum_x_squared - sum_x * sum_xy) / (n * sum_x_squared - sum_x * sum_x);
 
-	//calculate new target position
-	target = (maximum_sensor + minimum_sensor) / 2;
-
-	//move controlled to this target
-	while (1) {
-		int32_t encoder = get_encoder();
-		int32_t error = target - encoder;
-		int32_t output = error * 2;
+	offset = minimum_sensor;
 
 
-		int32_t w = coef_a * encoder + coef_b;
-		if (error < 20 && error > -20) {
-			break;
-		}
-		if (error > 0) {
-			w += N / 4; //add 90deg
-		} else {
-			w -= N / 4; //subtract 90deg
-		}
-		if (output < 0) {
-			output = -output;
-		}
-		if (output > pwm) {
-			output = pwm;
-		}
-
-		assign_angle(output, w);
-	}
+//	//move controlled to this target
+//	while (1) {
+//		int32_t encoder = get_encoder();
+//		int32_t error = target - encoder + offset;
+//		int32_t output = error * 2;
+//
+//
+//		int32_t w = coef_a * encoder + coef_b;
+//		if (error < 20 && error > -20) {
+//			break;
+//		}
+//		if (error > 0) {
+//			w += N / 4; //add 90deg
+//		} else {
+//			w -= N / 4; //subtract 90deg
+//		}
+//		if (output < 0) {
+//			output = -output;
+//		}
+//		if (output > pwm) {
+//			output = pwm;
+//		}
+//
+//		assign_angle(output, w);
+//		scheduler_task_sleep(1);
+//	}
 
 
 	assign_angle(0, 0);
@@ -201,11 +198,12 @@ void Motor::calibrate() {
 }
 
 
-void Motor::assign_angle(uint32_t power, int32_t angle) {
-	constexpr int pwm_max_half = (PWM_MAX / 2) - 1;
-
+__attribute__((optimize("Ofast"))) void Motor::assign_angle(uint32_t power, int32_t angle) {
 	if (power > pwm_max_half) {
 		power = pwm_max_half;
+	}
+	if (power > max_pwm) {
+		power = max_pwm;
 	}
 	//C % is not a true modulo, but the remainder
 	//since N is a power of 2, we use bit masking

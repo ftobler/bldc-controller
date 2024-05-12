@@ -87,6 +87,8 @@ uint32_t scheduler_event_wait_timeout(uint32_t eventWaitMask, uint32_t time);
  * Set remote tasks event flags to wake them up from wait state
  */
 void scheduler_event_set(uint32_t id, uint32_t eventSetMask);
+void scheduler_event_set_only(uint32_t id, uint32_t eventSetMask);
+
 
 
 void scheduler_systick_handler();

@@ -1,8 +1,9 @@
 #MicroXplorer Configuration settings - do not modify
+ADC1.ClockPrescaler=ADC_CLOCK_ASYNC_DIV8
 ADC1.ContinuousConvMode=ENABLE
 ADC1.DMAContinuousRequests=ENABLE
 ADC1.EOCSelection=ADC_EOC_SEQ_CONV
-ADC1.IPParameters=NbrOfConversionFlag,ContinuousConvMode,DMAContinuousRequests,SamplingTimeCommon1,Overrun,EOCSelection,OversamplingMode,master,SelectedChannel,NbrOfConversion,Sequencer
+ADC1.IPParameters=NbrOfConversionFlag,ContinuousConvMode,DMAContinuousRequests,SamplingTimeCommon1,Overrun,EOCSelection,OversamplingMode,master,SelectedChannel,NbrOfConversion,Sequencer,ClockPrescaler
 ADC1.NbrOfConversion=1
 ADC1.NbrOfConversionFlag=0
 ADC1.Overrun=ADC_OVR_DATA_OVERWRITTEN
