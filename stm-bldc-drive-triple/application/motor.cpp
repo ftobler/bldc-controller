@@ -24,7 +24,6 @@ extern uint32_t adc_dma_results[4];
 static int32_t controller_p = 2;
 static int32_t controller_i = 1;
 static int32_t controller_i_max = 200000;
-static float mean_error = 0;
 
 //static int absi(int i);
 
@@ -46,8 +45,6 @@ __attribute__((optimize("Ofast"))) void Motor::update() {
 	encoder = encoder_raw - offset;
 	int32_t error = target - encoder;
 
-	mean_error = mean_error * 0.99999f + error*error*0.00001f;
-
 	int32_t proportional = error * controller_p;
 	int32_t integrator_tmp = integrator + error;
 	int32_t integrator_max_tmp = controller_i_max;
@@ -59,7 +56,7 @@ __attribute__((optimize("Ofast"))) void Motor::update() {
 	}
 	integrator = integrator_tmp;
 
-	int32_t output = proportional + (integrator_tmp * controller_i / 1024);
+	int32_t output = proportional + (integrator_tmp * controller_i / 4096);
 
 //	int32_t w = coef_a * encoder_raw + coef_b;
 	int32_t w = ((encoder_raw * 7) / 4) + coef_b; //coef A is 1.75 in theory
@@ -86,9 +83,8 @@ void Motor::calibrate() {
 	//find the maximum hard endstop point => run motor forwards
 	int w = 0; //phase angle omega
 	int maximum_sensor = 0;
-	float tp_sensor = 4096.0f; //tp filtering of the sensor
+	float tp_sensor = 4096.0f; //tp filtering of the sensor. initialize far away from zero (assumed we are not max now)
 	int max_cnt = 0;
-
 	while (1) {
 		assign_angle(pwm, w);
 		scheduler_task_sleep(1);
@@ -97,32 +93,27 @@ void Motor::calibrate() {
 		float mean_change = sensor - tp_sensor; //mean change of the sensor between tries.
 		if (maximum_sensor < sensor) {
 			maximum_sensor = sensor;
-//			max_cnt = 0;
-		} else {
-//			max_cnt++;
 		}
-//		if (mean_change*mean_change < 10.0f && max_cnt > N/2) {
-//			break;
-//		}
+		//check if sensor is very near maximum point and
+		//sensor is not moving
 		if (abs(sensor - maximum_sensor) < 10.0f && mean_change*mean_change < 20.0f) {
 			max_cnt++;
+			//this condition must apply for a certain duration, then homing is complete.
 			if (max_cnt > N/8) {
 				break;
 			}
-			w = w + 1;
+			w = w + 1; //slow down
 		} else {
 			max_cnt = 0;
-			w = w + 8;
+			w = w + 8; //speed up
 		}
-//		if (max_cnt > N+50) {
-//			break;
-//		}
 	}
+
 	//find the minimum hard endstop point => run motor backwards
 	w = 0;
 	int minimum_sensor = 4096;
 	max_cnt = 0;
-	tp_sensor = 0.0f;
+	tp_sensor = 0.0f; //tp filtering of the sensor. initialize far away from max (assumed we are max)
 	while (1) {
 		assign_angle(pwm, w);
 		scheduler_task_sleep(1);
@@ -131,28 +122,20 @@ void Motor::calibrate() {
 		float mean_change = sensor - tp_sensor; //mean change of the sensor between tries.
 		if (minimum_sensor > sensor) {
 			minimum_sensor = sensor;
-//			max_cnt = 0;
-		} else {
-//			max_cnt++;
 		}
-//		if (mean_change*mean_change < 10.0f && max_cnt > N/2) {
-//			break;
-//		}
+		//check if sensor is very near maximum point and
+		//sensor is not moving
 		if (abs(sensor - minimum_sensor) < 10.0f && mean_change*mean_change < 20.0f) {
 			max_cnt++;
+			//this condition must apply for a certain duration, then homing is complete.
 			if (max_cnt > N/8) {
 				break;
 			}
-			w = w - 1;
+			w = w - 1; //slow down
 		} else {
 			max_cnt = 0;
-			w = w - 8;
+			w = w - 8; //speed up
 		}
-//		if (max_cnt > N+50) {
-//			break;
-//		}
-//		max_cnt++;
-//		w = w - 8;
 	}
 
 	//the two points correspond to the mechanical limit. offset them 35 (~3°) so there is a bit

@@ -151,7 +151,7 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles TIM15 global interrupt.
   */
-void TIM15_IRQHandler(void)
+__attribute__((optimize("Ofast"))) void TIM15_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM15_IRQn 0 */
 #if 0
@@ -164,12 +164,10 @@ void TIM15_IRQHandler(void)
   if (i >= 3) {
 	  i = 0;
 	  static int j = 0;
-	  if (j >= 5) {
-		  j = 0;
-	  } else {
-		  j++;
+	  j = !j;
+	  if (j) {
+		  scheduler_event_set_only(TASK_ID_APPLICATION, EVENT_APPLICATION_TIMER);
 	  }
-	  scheduler_event_set_only(TASK_ID_APPLICATION, EVENT_APPLICATION_TIMER);
 	  scheduler_event_set_only(TASK_ID_MOTOR_0, EVENT_MOTOR_0_PWM);
 	  scheduler_event_set_only(TASK_ID_MOTOR_1, EVENT_MOTOR_1_PWM);
 	  scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_PWM);
