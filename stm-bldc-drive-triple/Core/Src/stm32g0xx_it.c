@@ -151,7 +151,7 @@ void SysTick_Handler(void)
 /**
   * @brief This function handles TIM15 global interrupt.
   */
-__attribute__((optimize("Ofast"))) void TIM15_IRQHandler(void)
+void TIM15_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM15_IRQn 0 */
 #if 0

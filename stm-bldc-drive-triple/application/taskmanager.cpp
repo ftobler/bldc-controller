@@ -38,6 +38,7 @@ static void motor_2_task_fn();
 
 extern Database_value_t database_value;
 uint32_t enable_automatic = 0;
+volatile uint32_t idle_looper = 0;
 
 extern Motor motors[3];
 
@@ -56,6 +57,7 @@ void taskmanager_init() {
 static void idle_task_fn() {
 	while (1) {
 		//as5600_poll();
+		idle_looper++;
 	}
 }
 
