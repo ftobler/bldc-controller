@@ -21,7 +21,11 @@ void sine_init() {
 
 
 float sine(float w) {
-	int32_t wi = w * N / (float)M_PI / 2.0f;
+	int32_t wi = w * N / (float)(M_PI) / 2.0f;
 	int16_t result = sintab[wi & (N - 1)];
 	return (float)result / SINMAX;
+}
+
+float cose(float w) {
+	return sine(w + (float)(M_PI) / 2.0f);
 }

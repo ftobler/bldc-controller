@@ -66,9 +66,9 @@ void application_setup() {
 	motors[0].coef_a = 1.75088286f;
 	motors[0].coef_b = -300;
 	motors[0].calibrated = 1;
-	motors[0].controller_p = 20;//9;
-	motors[0].controller_i = 0;
-	motors[0].speed_nerf = 4;
+	motors[0].controller_p = 10;//9;
+//	controllers[0].controller_i = 0;
+//	controllers[0].speed_nerf = 4;
 
 	//configure motor 1 struct
 	motors[1].pwm[0] = &(htim3.Instance->CCR4);
@@ -82,9 +82,9 @@ void application_setup() {
 	motors[1].coef_a = 1.75184751f;
 	motors[1].coef_b = -253;
 	motors[1].calibrated = 1;
-	motors[1].controller_p = 10;//3;
-	motors[1].controller_i = 0;
-	motors[1].speed_nerf = 1;
+	motors[1].controller_p = 3;//3;
+//	motors[1].controller_i = 0;
+//	motors[1].speed_nerf = 1;
 
 	//configure motor 2 struct
 	motors[2].pwm[0] = &(htim3.Instance->CCR1);
@@ -99,7 +99,7 @@ void application_setup() {
 	motors[2].coef_b = -677;
 	motors[2].calibrated = 1;
 	motors[2].controller_p = 6;
-	motors[2].controller_i = 0;
+//	motors[2].controller_i = 0;
 
 	//start the timers, start pwm, one timer in interrupt mode.
 	HAL_TIM_Base_Start(&htim1);
@@ -128,6 +128,7 @@ void application_setup() {
 //		*motors[i].pwm[1] = i * 300 + 200;
 //		*motors[i].pwm[2] = i * 300 + 300;
 		motors[i].en_port->BSRR = motors[i].en_pin;
+		motors[i].max_pwm = app_pwm[i];
 	}
 
 
@@ -174,9 +175,6 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 //		motors[2].target = 1750;
 //	}
 
-	for (int i = 0; i < 3; i++) {
-		motors[i].max_pwm = app_pwm[i];
-	}
 
 	pick(coordinates[0][0], coordinates[0][1]);
 	place(coordinates[1][0], coordinates[1][1]);
@@ -189,7 +187,6 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 	pick(coordinates[3][0], coordinates[3][1]);
 	place(coordinates[0][0], coordinates[0][1]);
 	wait_for();
-
 
 
 
@@ -208,6 +205,19 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 //		motors[i].target = app_target[i];
 //		motors[i].target = app_target[i] * p1 + app_target2[i] * p2;
 //	}
+}
+
+//volatile float m0_m1_precontrol = -1.6f;
+//volatile float m1_m0_precontrol = 0.08f;
+volatile float m0_m1_precontrol = 0.5f;
+volatile float m1_m0_precontrol = -0.25f;
+
+void motor_control_transfer() {
+	float angle_knee_joint = (motors[1].encoder - 1800) / (1024.0f * 3.14159f / 2);
+	float cos_value = cose(angle_knee_joint);
+	motors[0].input = motors[0].output + motors[1].output * m0_m1_precontrol * cos_value;
+	motors[1].input = motors[1].output + motors[0].output * m1_m0_precontrol * cos_value;
+	motors[2].input = motors[2].output;
 }
 
 static void pick(float x, float y) {

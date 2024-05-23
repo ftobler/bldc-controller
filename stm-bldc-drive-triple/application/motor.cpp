@@ -28,15 +28,39 @@ volatile static int32_t controller_i_max = 200000;
 //static int absi(int i);
 
 
+
+Controller::Controller() {
+	target = 0;
+	encoder = 0;
+	controller_p = 0;
+	output = 0;
+}
+void Controller::update() {
+}
+
 Motor::Motor() {
 	coef_a = 1.75f;
 	coef_b = -280;
 	max_pwm = pwm_max_half;
-	controller_p = 4;
-	controller_i = 0;
-	for (uint32_t i = 0; i < HISTORY_LEN; i++) {
-		encoder_history[i] = 0;
-	}
+//	controller_p = 4;
+//	controller_i = 0;
+//	for (uint32_t i = 0; i < HISTORY_LEN; i++) {
+//		encoder_history[i] = 0;
+//	}
+	differentiator = 0;
+	controller_d = 0;
+}
+
+__attribute__((optimize("Ofast"))) void Motor::control() {
+	int32_t _raw = adc_dma_results[dma_index];
+	encoder_raw = _raw;
+	encoder = _raw - offset;
+	int32_t error = target - encoder;
+
+	differentiator = differentiator * 0.99f + (last_encoder - encoder);
+	last_encoder = encoder;
+
+	output = error * controller_p + differentiator * controller_d;
 }
 
 __attribute__((optimize("Ofast"))) void Motor::update() {
@@ -46,65 +70,47 @@ __attribute__((optimize("Ofast"))) void Motor::update() {
 //		return;
 //	}
 
-	int32_t encoder_raw = adc_dma_results[dma_index];
-	encoder = encoder_raw - offset;
-	int32_t error = target - encoder;
-
-
-
-	int32_t _last_encoder = encoder_history[encoder_history_pos];
-	encoder_history[encoder_history_pos] = encoder;
-	encoder_history_pos = (encoder_history_pos + 1) % HISTORY_LEN;
-
-	speed_filtered =+ encoder - _last_encoder;
-
-	int32_t speed = _last_encoder - encoder;
-//	speed_filter = ((speed * 256) + (speed_filter*63)) / 64;
-//	int32_t speed_filter_out = speed_filter / 256;
-//	last_encoder = encoder;
-
-//	if (speed > 20 && error > 0) {
-//		error -= 200;
+//	int32_t encoder_raw = adc_dma_results[dma_index];
+//	encoder = encoder_raw - offset;
+//	int32_t error = target - encoder;
+//
+//
+//
+//	int32_t _last_encoder = encoder_history[encoder_history_pos];
+//	encoder_history[encoder_history_pos] = encoder;
+//	encoder_history_pos = (encoder_history_pos + 1) % HISTORY_LEN;
+//
+//	speed_filtered =+ encoder - _last_encoder;
+//
+//
+//	speed = speed_filtered;
+//	if (speed > 3) {
+//		error -= (speed-3) * speed_nerf;
+//	} else if (speed < -3) {
+//		error -= (speed+3) * speed_nerf;
 //	}
-//	if (speed < -20 && error < 0) {
-//		error += 200;
-//	}
-	speed = speed_filtered;
-	if (speed > 3) {
-		error -= (speed-3) * speed_nerf;
-	} else if (speed < -3) {
-		error -= (speed+3) * speed_nerf;
-	}
-//	error -= speed * speed_nerf;
-	_speed = speed;
-
-
-	int32_t proportional = error * controller_p;
-
-//	int32_t integrator_tmp = integrator + error;
-//	int32_t integrator_max_tmp = controller_i_max;
-//	if (integrator_tmp > integrator_max_tmp) {
-//		integrator_tmp = integrator_max_tmp;
-//	}
-//	if (integrator_tmp < -integrator_max_tmp) {
-//		integrator_tmp = -integrator_max_tmp;
-//	}
-//	integrator = integrator_tmp;
-
-	int32_t output = proportional;// + (integrator_tmp * controller_i / 4096 / 4);
+////	error -= speed * speed_nerf;
+//	_speed = speed;
+//
+//
+//	int32_t proportional = error * controller_p;
+//
+//
+//	int32_t output = proportional;// + (integrator_tmp * controller_i / 4096 / 4);
 
 //	int32_t w = coef_a * encoder_raw + coef_b;
 	int32_t w = ((encoder_raw * 7) / 4) + coef_b; //coef A is 1.75 in theory
-	if (error > 0) {
+	int32_t _input = input;
+	if (_input > 0) {
 		w += N / 4; //add 90deg
 	} else {
 		w -= N / 4; //subtract 90deg
 	}
-	if (output < 0) {
-		output = -output;
+	if (_input < 0) {
+		_input = -_input;
 	}
 
-	assign_angle(output, w);
+	assign_angle(_input, w);
 
 }
 

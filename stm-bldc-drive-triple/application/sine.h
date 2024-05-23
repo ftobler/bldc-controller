@@ -19,6 +19,7 @@ enum {
 
 void sine_init();
 float sine(float w);
+float cose(float w);
 
 
 

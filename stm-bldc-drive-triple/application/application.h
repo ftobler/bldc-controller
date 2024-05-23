@@ -17,6 +17,8 @@ constexpr int PWM_MAX = 3200; //20kHz
 void application_setup();
 void application_loop();
 
+void motor_control_transfer();
+
 #ifdef __cplusplus
 }
 #endif

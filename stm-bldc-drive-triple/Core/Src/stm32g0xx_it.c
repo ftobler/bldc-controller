@@ -161,16 +161,17 @@ void TIM15_IRQHandler(void)
 #endif
   __HAL_TIM_CLEAR_FLAG(&htim15, TIM_FLAG_UPDATE);
   static int i = 0;
-  if (i >= 1) {
+  if (i >= 5) {
 	  i = 0;
 	  static int j = 0;
 	  j = !j;
 	  if (j) {
 		  scheduler_event_set_only(TASK_ID_APPLICATION, EVENT_APPLICATION_TIMER);
 	  }
-	  scheduler_event_set_only(TASK_ID_MOTOR_0, EVENT_MOTOR_0_PWM);
-	  scheduler_event_set_only(TASK_ID_MOTOR_1, EVENT_MOTOR_1_PWM);
-	  scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_PWM);
+	  scheduler_event_set(TASK_ID_MOTOR, EVENT_MOTOR_PWM);
+//	  scheduler_event_set_only(TASK_ID_MOTOR_0, EVENT_MOTOR_0_PWM);
+//	  scheduler_event_set_only(TASK_ID_MOTOR_1, EVENT_MOTOR_1_PWM);
+//	  scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_PWM);
   } else {
 	  i++;
   }

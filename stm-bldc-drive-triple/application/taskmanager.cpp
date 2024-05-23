@@ -24,17 +24,19 @@ static uint8_t stack_idle_task[STD_STACK_SIZE];
 static uint8_t stack_led_task[STD_STACK_SIZE];
 static uint8_t stack_application_task[STD_STACK_SIZE];
 static uint8_t stack_protocol_task[STD_STACK_SIZE];
-static uint8_t stack_motor_0_task[STD_STACK_SIZE];
-static uint8_t stack_motor_1_task[STD_STACK_SIZE];
-static uint8_t stack_motor_2_task[STD_STACK_SIZE];
+static uint8_t stack_motor_task[STD_STACK_SIZE];
+//static uint8_t stack_motor_0_task[STD_STACK_SIZE];
+//static uint8_t stack_motor_1_task[STD_STACK_SIZE];
+//static uint8_t stack_motor_2_task[STD_STACK_SIZE];
 
 static void idle_task_fn();
 static void led_task_fn();
 static void application_task_fn();
 static void protocol_task_fn();
-static void motor_0_task_fn();
-static void motor_1_task_fn();
-static void motor_2_task_fn();
+static void motor_task_fn();
+//static void motor_0_task_fn();
+//static void motor_1_task_fn();
+//static void motor_2_task_fn();
 
 extern Database_value_t database_value;
 uint32_t enable_automatic = 0;
@@ -48,9 +50,10 @@ void taskmanager_init() {
 	scheduler_addTask(TASK_ID_LED, led_task_fn, stack_led_task, STD_STACK_SIZE);
 	scheduler_addTask(TASK_ID_PROTOCOL, protocol_task_fn, stack_protocol_task, STD_STACK_SIZE);
 	scheduler_addTask(TASK_ID_APPLICATION, application_task_fn, stack_application_task, STD_STACK_SIZE);
-	scheduler_addTask(TASK_ID_MOTOR_0, motor_0_task_fn, stack_motor_0_task, STD_STACK_SIZE);
-	scheduler_addTask(TASK_ID_MOTOR_1, motor_1_task_fn, stack_motor_1_task, STD_STACK_SIZE);
-	scheduler_addTask(TASK_ID_MOTOR_2, motor_2_task_fn, stack_motor_2_task, STD_STACK_SIZE); //highest priority
+	scheduler_addTask(TASK_ID_MOTOR, motor_task_fn, stack_motor_task, STD_STACK_SIZE);
+//	scheduler_addTask(TASK_ID_MOTOR_0, motor_0_task_fn, stack_motor_0_task, STD_STACK_SIZE);
+//	scheduler_addTask(TASK_ID_MOTOR_1, motor_1_task_fn, stack_motor_1_task, STD_STACK_SIZE);
+//	scheduler_addTask(TASK_ID_MOTOR_2, motor_2_task_fn, stack_motor_2_task, STD_STACK_SIZE); //highest priority
 	scheduler_join();
 }
 
@@ -92,9 +95,10 @@ static void protocol_task_fn() {
 static void application_task_fn() {
 	sine_init();
 	application_setup();
-	scheduler_event_set(TASK_ID_MOTOR_0, EVENT_MOTOR_0_START);
-	scheduler_event_set(TASK_ID_MOTOR_1, EVENT_MOTOR_1_START);
-	scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_START);
+	scheduler_event_set(TASK_ID_MOTOR, EVENT_MOTOR_START);
+//	scheduler_event_set(TASK_ID_MOTOR_0, EVENT_MOTOR_0_START);
+//	scheduler_event_set(TASK_ID_MOTOR_1, EVENT_MOTOR_1_START);
+//	scheduler_event_set(TASK_ID_MOTOR_2, EVENT_MOTOR_2_START);
 	while (1) {
 		scheduler_event_wait(EVENT_APPLICATION_TIMER);
 		application_loop();
@@ -102,32 +106,48 @@ static void application_task_fn() {
 	}
 }
 
-static void motor_0_task_fn() {
-	Motor* motor = &motors[0];
-	scheduler_event_wait(EVENT_MOTOR_0_START);
+
+static void motor_task_fn() {
+	scheduler_event_wait(EVENT_MOTOR_START);
 //	motor->calibrate();
 	while (1) {
-		scheduler_event_wait(EVENT_MOTOR_0_PWM);
-		motor->update();
+		scheduler_event_wait(EVENT_MOTOR_PWM);
+		motors[0].control();
+		motors[1].control();
+		motors[2].control();
+		motor_control_transfer();
+		motors[0].update();
+		motors[1].update();
+		motors[2].update();
 	}
 }
-static void motor_1_task_fn() {
-	Motor* motor = &motors[1];
-	scheduler_event_wait(EVENT_MOTOR_1_START);
-//	motor->calibrate();
-	while (1) {
-		scheduler_event_wait(EVENT_MOTOR_1_PWM);
-		motor->update();
-	}
-}
-static void motor_2_task_fn() {
-	Motor* motor = &motors[2];
-	scheduler_event_wait(EVENT_MOTOR_2_START);
-//	motor->calibrate();
-	while (1) {
-		scheduler_event_wait(EVENT_MOTOR_2_PWM);
-		motor->update();
-	}
-}
+
+//static void motor_0_task_fn() {
+//	Motor* motor = &motors[0];
+//	scheduler_event_wait(EVENT_MOTOR_0_START);
+////	motor->calibrate();
+//	while (1) {
+//		scheduler_event_wait(EVENT_MOTOR_0_PWM);
+//		motor->update();
+//	}
+//}
+//static void motor_1_task_fn() {
+//	Motor* motor = &motors[1];
+//	scheduler_event_wait(EVENT_MOTOR_1_START);
+////	motor->calibrate();
+//	while (1) {
+//		scheduler_event_wait(EVENT_MOTOR_1_PWM);
+//		motor->update();
+//	}
+//}
+//static void motor_2_task_fn() {
+//	Motor* motor = &motors[2];
+//	scheduler_event_wait(EVENT_MOTOR_2_START);
+////	motor->calibrate();
+//	while (1) {
+//		scheduler_event_wait(EVENT_MOTOR_2_PWM);
+//		motor->update();
+//	}
+//}
 
 
