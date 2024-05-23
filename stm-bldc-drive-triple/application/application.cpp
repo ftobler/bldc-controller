@@ -37,20 +37,19 @@ extern Database_value_t database_value;
 uint32_t app_pwm[3] = {1600,1600,1600};
 int32_t app_target[3] = {2500,3000,1700};
 int32_t app_target2[3] = {2000,2000,2200};
-int32_t capture = 0;
-int32_t position = 0;
 int32_t target_buffer[64][3] = {2000};
 
 
 constexpr int up = 2300;
 constexpr int hold = 1900;
-constexpr int down = 1520;
+constexpr int down = 1500;
 
 static void pick(float x, float y);
 static void place(float x, float y);
 static void grip();
 static void release();
 static void wait_for();
+static void wait_for_fast();
 
 
 void application_setup() {
@@ -67,8 +66,10 @@ void application_setup() {
 	motors[0].coef_b = -300;
 	motors[0].calibrated = 1;
 	motors[0].controller_p = 10;//9;
-//	controllers[0].controller_i = 0;
-//	controllers[0].speed_nerf = 4;
+	motors[0].controller_i = 0.005f;
+	motors[0].controller_d = 20;
+	motors[0].has_control_d = 1;
+	motors[0].has_control_i = 1;
 
 	//configure motor 1 struct
 	motors[1].pwm[0] = &(htim3.Instance->CCR4);
@@ -82,10 +83,11 @@ void application_setup() {
 	motors[1].coef_a = 1.75184751f;
 	motors[1].coef_b = -253;
 	motors[1].calibrated = 1;
-	motors[1].controller_p = 3;//3;
-//	motors[1].controller_i = 0;
-//	motors[1].speed_nerf = 1;
-
+	motors[1].controller_p = 5;//3;
+	motors[1].controller_i = 0.005f;
+	motors[1].controller_d = 10;
+	motors[1].has_control_d = 1;
+	motors[1].has_control_i = 1;
 	//configure motor 2 struct
 	motors[2].pwm[0] = &(htim3.Instance->CCR1);
 	motors[2].pwm[1] = &(htim15.Instance->CCR2);
@@ -99,7 +101,8 @@ void application_setup() {
 	motors[2].coef_b = -677;
 	motors[2].calibrated = 1;
 	motors[2].controller_p = 6;
-//	motors[2].controller_i = 0;
+	motors[2].has_control_d = 0;
+	motors[2].has_control_i = 0;
 
 	//start the timers, start pwm, one timer in interrupt mode.
 	HAL_TIM_Base_Start(&htim1);
@@ -138,11 +141,18 @@ void application_setup() {
 
 }
 
-static volatile int coordinates[4][2] = {
-		{2204,2445},
-		{2404,2535},
-		{2325,2530},
-		{2557,2767},
+
+int32_t position = 0;
+int32_t capture = 0;
+static volatile int coordinates[8][2] = {
+		{2191,2509},
+		{2478,2563},
+		{2298,2554},
+		{2654,2959},
+		{3082,2850},
+		{1859,1084},
+		{2097,2950},
+		{1778,2018},
 };
 
 __attribute__((optimize("Ofast"))) void application_loop() {
@@ -188,6 +198,21 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 	place(coordinates[0][0], coordinates[0][1]);
 	wait_for();
 
+	pick(coordinates[4][0], coordinates[4][1]);
+	place(coordinates[5][0], coordinates[5][1]);
+	pick(coordinates[6][0], coordinates[6][1]);
+	place(coordinates[7][0], coordinates[7][1]);
+	wait_for();
+
+
+//	app_target[0] = coordinates[position][0];
+//	app_target[1] = coordinates[position][1];
+//	wait_for_fast();
+//	if (capture) {
+//		capture = 0;
+//		coordinates[position][0] = motors[0].encoder;
+//		coordinates[position][1] = motors[1].encoder;
+//	}
 
 
 //	if (capture) {
@@ -265,25 +290,30 @@ static void wait_for() {
 		if (good >= 3) {
 			break;
 		}
-//		int i = 2;
 		scheduler_task_sleep(1);
-//		if (app_target[i] != motors[i].target) {
-//			if (app_target[i] > motors[i].target) {
-//				motors[i].target++;
-//			} else {
-//				motors[i].target--;
-//			}
-//		}
-//		scheduler_task_sleep(1);
-//		if (app_target[i] != motors[i].target) {
-//			if (app_target[i] > motors[i].target) {
-//				motors[i].target++;
-//			} else {
-//				motors[i].target--;
-//			}
-//		}
 	}
 	scheduler_task_sleep(500);
+}
+
+static void wait_for_fast() {
+	for (int j = 0; j < 200; j++) {
+		int good = 0;
+		for (int i = 0; i < 3; i++) {
+			if (app_target[i] != motors[i].target) {
+				if (app_target[i] > motors[i].target) {
+					motors[i].target++;
+				} else {
+					motors[i].target--;
+				}
+			} else {
+				good += 1;
+			}
+		}
+		if (good >= 3) {
+			break;
+		}
+		scheduler_task_sleep(1);
+	}
 }
 
 

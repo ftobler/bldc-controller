@@ -28,13 +28,13 @@ public:
 };
 
 class Motor {
-private:
-	int32_t integrator;
 public:
 	volatile uint32_t* pwm[3]; //pointer to pwm registers
 	volatile GPIO_TypeDef* en_port; //enable port
 	uint16_t en_pin; //enable pin
 	int8_t dma_index; //index of the sensor feedback
+	uint8_t has_control_d = 0;
+	uint8_t has_control_i = 0;
 
 //	int32_t target;
 	uint32_t calibrated = 0;
@@ -57,11 +57,13 @@ public:
 	int32_t encoder_raw;
 	int32_t controller_p;
 	float controller_d;
+	float controller_i;
 	int32_t output = 0;
 	int32_t input = 0;
 
 	int32_t last_encoder;
 	float differentiator;
+	int32_t integrator;
 
 
 //	float coef_a = 0.0f;

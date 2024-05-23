@@ -57,10 +57,26 @@ __attribute__((optimize("Ofast"))) void Motor::control() {
 	encoder = _raw - offset;
 	int32_t error = target - encoder;
 
-	differentiator = differentiator * 0.99f + (last_encoder - encoder);
-	last_encoder = encoder;
-
-	output = error * controller_p + differentiator * controller_d;
+	int32_t controller_d_int = 0;
+	int32_t controller_i_int = 0;
+	int32_t controller_p_int = error * controller_p;
+	if (has_control_d) {
+		differentiator = differentiator * 0.99f + (last_encoder - encoder);
+		last_encoder = encoder;
+		controller_d_int = differentiator * controller_d;
+	}
+	if (has_control_i) {
+		integrator += error;
+		int32_t max = max_pwm / controller_i;
+		if (integrator > max) {
+			integrator = max;
+		}
+		if (integrator < -max) {
+			integrator = -max;
+		}
+		controller_i_int = integrator * controller_i;
+	}
+	output = controller_p_int + controller_i_int + controller_d_int;
 }
 
 __attribute__((optimize("Ofast"))) void Motor::update() {
