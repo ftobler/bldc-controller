@@ -34,6 +34,23 @@ int32_t vcc_mv = 0;
 
 
 extern Database_value_t database_value;
+uint32_t app_pwm[3] = {1600,1600,1600};
+int32_t app_target[3] = {2500,3000,1700};
+int32_t app_target2[3] = {2000,2000,2200};
+int32_t capture = 0;
+int32_t position = 0;
+int32_t target_buffer[64][3] = {2000};
+
+
+constexpr int up = 2300;
+constexpr int hold = 1900;
+constexpr int down = 1520;
+
+static void pick(float x, float y);
+static void place(float x, float y);
+static void grip();
+static void release();
+static void wait_for();
 
 
 void application_setup() {
@@ -45,9 +62,14 @@ void application_setup() {
 	motors[0].en_port = ENABLE_M1_GPIO_Port;
 	motors[0].en_pin = ENABLE_M1_Pin;
 	motors[0].dma_index = 0;
-//	motors[0].coef_a = 1.75f;
-//	motors[0].coef_b = -291.763092f;
-//	motors[0].calibrated = 1;
+	motors[0].offset = 124;
+	motors[0].coef_a = 1.75088286f;
+	motors[0].coef_b = -300;
+	motors[0].calibrated = 1;
+	motors[0].controller_p = 20;//9;
+	motors[0].controller_i = 0;
+	motors[0].speed_nerf = 4;
+
 	//configure motor 1 struct
 	motors[1].pwm[0] = &(htim3.Instance->CCR4);
 	motors[1].pwm[1] = &(htim3.Instance->CCR3);
@@ -55,10 +77,15 @@ void application_setup() {
 	motors[1].en_port = ENABLE_M2_GPIO_Port;
 	motors[1].en_pin = ENABLE_M2_Pin;
 	motors[1].dma_index = 1;
-//	motors[1].coef_a = 1.75f;
-//	motors[1].coef_b = -359.899902f;
-//	motors[1].calibrated = 1;
 	motors[1].reverse_field();
+	motors[1].offset = 299;
+	motors[1].coef_a = 1.75184751f;
+	motors[1].coef_b = -253;
+	motors[1].calibrated = 1;
+	motors[1].controller_p = 10;//3;
+	motors[1].controller_i = 0;
+	motors[1].speed_nerf = 1;
+
 	//configure motor 2 struct
 	motors[2].pwm[0] = &(htim3.Instance->CCR1);
 	motors[2].pwm[1] = &(htim15.Instance->CCR2);
@@ -67,9 +94,12 @@ void application_setup() {
 	motors[2].en_pin = ENABLE_M3_Pin;
 	motors[2].dma_index = 2;
 	motors[2].reverse_field();
-//	motors[2].coef_a = 1.75f;
-//	motors[2].coef_b = -658.282288f;
-//	motors[2].calibrated = 1;
+	motors[2].offset = 222;
+	motors[2].coef_a = 1.75288868f;
+	motors[2].coef_b = -677;
+	motors[2].calibrated = 1;
+	motors[2].controller_p = 6;
+	motors[2].controller_i = 0;
 
 	//start the timers, start pwm, one timer in interrupt mode.
 	HAL_TIM_Base_Start(&htim1);
@@ -100,7 +130,19 @@ void application_setup() {
 		motors[i].en_port->BSRR = motors[i].en_pin;
 	}
 
+
+	motors[0].target = 2000;
+	motors[1].target = 2000;
+	motors[2].target = 2000;
+
 }
+
+static volatile int coordinates[4][2] = {
+		{2204,2445},
+		{2404,2535},
+		{2325,2530},
+		{2557,2767},
+};
 
 __attribute__((optimize("Ofast"))) void application_loop() {
 
@@ -121,16 +163,119 @@ __attribute__((optimize("Ofast"))) void application_loop() {
 //		motors[2].max_pwm = 900;
 //	}
 
-	if (motors[0].calibrated && motors[1].calibrated && motors[2].calibrated) {
-		motors[0].target = 1750 + 900.0f * sine(uwTick / 150.0f);
-		motors[1].target = motors[0].target + 450.0f * sine(uwTick / 50.0f);
-		motors[2].target = motors[1].target + 300.0f * sine(uwTick / 30.0f);
-	} else {
-		motors[0].target = 1750;
-		motors[1].target = 1750;
-		motors[2].target = 1750;
+
+//	if (motors[0].calibrated && motors[1].calibrated && motors[2].calibrated) {
+//		motors[0].target = 1750 + 900.0f * sine(uwTick / 150.0f);
+//		motors[1].target = motors[0].target + 450.0f * sine(uwTick / 50.0f);
+//		motors[2].target = motors[1].target + 300.0f * sine(uwTick / 30.0f);
+//	} else {
+//		motors[0].target = 1750;
+//		motors[1].target = 1750;
+//		motors[2].target = 1750;
+//	}
+
+	for (int i = 0; i < 3; i++) {
+		motors[i].max_pwm = app_pwm[i];
 	}
+
+	pick(coordinates[0][0], coordinates[0][1]);
+	place(coordinates[1][0], coordinates[1][1]);
+	pick(coordinates[2][0], coordinates[2][1]);
+	place(coordinates[3][0], coordinates[3][1]);
+	wait_for();
+
+	pick(coordinates[1][0], coordinates[1][1]);
+	place(coordinates[2][0], coordinates[2][1]);
+	pick(coordinates[3][0], coordinates[3][1]);
+	place(coordinates[0][0], coordinates[0][1]);
+	wait_for();
+
+
+
+
+//	if (capture) {
+//		for (int i = 0; i < 3; i++) {
+//			target_buffer[position][i] = motors[i].encoder;
+//		}
+//		position++;
+//		capture = 0;
+//	}
+//
+//	for (int i = 0; i < 3; i++) {
+//		float p1 = (sine(uwTick / 1500.0f) + 1.0f) / 2.0f;
+//		float p2 = 1 - p1;
+//		motors[i].max_pwm = app_pwm[i];
+//		motors[i].target = app_target[i];
+//		motors[i].target = app_target[i] * p1 + app_target2[i] * p2;
+//	}
 }
+
+static void pick(float x, float y) {
+	app_target[0] = x;
+	app_target[1] = y;
+	wait_for();
+	grip();
+}
+
+static void place(float x, float y) {
+	app_target[0] = x;
+	app_target[1] = y;
+	wait_for();
+	release();
+}
+
+static void grip() {
+	app_target[2] = down;
+	wait_for();
+	app_target[2] = hold;
+	wait_for();
+}
+static void release() {
+	app_target[2] = up;
+	wait_for();
+	app_target[2] = hold;
+	wait_for();
+}
+
+
+static void wait_for() {
+	while (1) {
+		int good = 0;
+		for (int i = 0; i < 3; i++) {
+			if (app_target[i] != motors[i].target) {
+				if (app_target[i] > motors[i].target) {
+					motors[i].target++;
+				} else {
+					motors[i].target--;
+				}
+			} else {
+				good += 1;
+			}
+		}
+		if (good >= 3) {
+			break;
+		}
+//		int i = 2;
+		scheduler_task_sleep(1);
+//		if (app_target[i] != motors[i].target) {
+//			if (app_target[i] > motors[i].target) {
+//				motors[i].target++;
+//			} else {
+//				motors[i].target--;
+//			}
+//		}
+//		scheduler_task_sleep(1);
+//		if (app_target[i] != motors[i].target) {
+//			if (app_target[i] > motors[i].target) {
+//				motors[i].target++;
+//			} else {
+//				motors[i].target--;
+//			}
+//		}
+	}
+	scheduler_task_sleep(500);
+}
+
 
 
 

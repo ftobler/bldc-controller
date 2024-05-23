@@ -21,9 +21,9 @@ constexpr int pwm_max_half = (PWM_MAX / 2) - 1;
 extern int16_t sintab[N];
 extern uint32_t adc_dma_results[4];
 
-static int32_t controller_p = 2;
-static int32_t controller_i = 1;
-static int32_t controller_i_max = 200000;
+//volatile static int32_t controller_p = 4;
+//volatile static int32_t controller_i = 0;
+volatile static int32_t controller_i_max = 200000;
 
 //static int absi(int i);
 
@@ -32,31 +32,66 @@ Motor::Motor() {
 	coef_a = 1.75f;
 	coef_b = -280;
 	max_pwm = pwm_max_half;
+	controller_p = 4;
+	controller_i = 0;
+	for (uint32_t i = 0; i < HISTORY_LEN; i++) {
+		encoder_history[i] = 0;
+	}
 }
 
 __attribute__((optimize("Ofast"))) void Motor::update() {
 
-	if (calibrated == 0) {
-		assign_angle(0, 0);
-		return;
-	}
+//	if (calibrated == 0) {
+//		assign_angle(0, 0);
+//		return;
+//	}
 
 	int32_t encoder_raw = adc_dma_results[dma_index];
 	encoder = encoder_raw - offset;
 	int32_t error = target - encoder;
 
-	int32_t proportional = error * controller_p;
-	int32_t integrator_tmp = integrator + error;
-	int32_t integrator_max_tmp = controller_i_max;
-	if (integrator_tmp > integrator_max_tmp) {
-		integrator_tmp = integrator_max_tmp;
-	}
-	if (integrator_tmp < -integrator_max_tmp) {
-		integrator_tmp = -integrator_max_tmp;
-	}
-	integrator = integrator_tmp;
 
-	int32_t output = proportional + (integrator_tmp * controller_i / 4096);
+
+	int32_t _last_encoder = encoder_history[encoder_history_pos];
+	encoder_history[encoder_history_pos] = encoder;
+	encoder_history_pos = (encoder_history_pos + 1) % HISTORY_LEN;
+
+	speed_filtered =+ encoder - _last_encoder;
+
+	int32_t speed = _last_encoder - encoder;
+//	speed_filter = ((speed * 256) + (speed_filter*63)) / 64;
+//	int32_t speed_filter_out = speed_filter / 256;
+//	last_encoder = encoder;
+
+//	if (speed > 20 && error > 0) {
+//		error -= 200;
+//	}
+//	if (speed < -20 && error < 0) {
+//		error += 200;
+//	}
+	speed = speed_filtered;
+	if (speed > 3) {
+		error -= (speed-3) * speed_nerf;
+	} else if (speed < -3) {
+		error -= (speed+3) * speed_nerf;
+	}
+//	error -= speed * speed_nerf;
+	_speed = speed;
+
+
+	int32_t proportional = error * controller_p;
+
+//	int32_t integrator_tmp = integrator + error;
+//	int32_t integrator_max_tmp = controller_i_max;
+//	if (integrator_tmp > integrator_max_tmp) {
+//		integrator_tmp = integrator_max_tmp;
+//	}
+//	if (integrator_tmp < -integrator_max_tmp) {
+//		integrator_tmp = -integrator_max_tmp;
+//	}
+//	integrator = integrator_tmp;
+
+	int32_t output = proportional;// + (integrator_tmp * controller_i / 4096 / 4);
 
 //	int32_t w = coef_a * encoder_raw + coef_b;
 	int32_t w = ((encoder_raw * 7) / 4) + coef_b; //coef A is 1.75 in theory
@@ -188,6 +223,28 @@ void Motor::calibrate() {
 		sum_xy += x*y;
 
 		w++;
+		assign_angle(pwm2, w);
+		scheduler_task_sleep(1);
+		n++;
+	}
+	scheduler_task_sleep(10);
+
+	//continiue regression while driving to min position
+	while (1) {
+		int sensor = get_encoder();
+		if (sensor < minimum_sensor) {
+			break;
+		}
+
+		//accumulate the regression
+		float x = sensor;
+		float y = w;
+		sum_x += x;
+		sum_y += y;
+		sum_x_squared += x*x;
+		sum_xy += x*y;
+
+		w--;
 		assign_angle(pwm2, w);
 		scheduler_task_sleep(1);
 		n++;

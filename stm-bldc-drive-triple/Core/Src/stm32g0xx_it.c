@@ -161,7 +161,7 @@ void TIM15_IRQHandler(void)
 #endif
   __HAL_TIM_CLEAR_FLAG(&htim15, TIM_FLAG_UPDATE);
   static int i = 0;
-  if (i >= 3) {
+  if (i >= 1) {
 	  i = 0;
 	  static int j = 0;
 	  j = !j;

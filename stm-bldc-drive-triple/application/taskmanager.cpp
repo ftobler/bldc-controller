@@ -105,7 +105,7 @@ static void application_task_fn() {
 static void motor_0_task_fn() {
 	Motor* motor = &motors[0];
 	scheduler_event_wait(EVENT_MOTOR_0_START);
-	motor->calibrate();
+//	motor->calibrate();
 	while (1) {
 		scheduler_event_wait(EVENT_MOTOR_0_PWM);
 		motor->update();
@@ -114,7 +114,7 @@ static void motor_0_task_fn() {
 static void motor_1_task_fn() {
 	Motor* motor = &motors[1];
 	scheduler_event_wait(EVENT_MOTOR_1_START);
-	motor->calibrate();
+//	motor->calibrate();
 	while (1) {
 		scheduler_event_wait(EVENT_MOTOR_1_PWM);
 		motor->update();
@@ -123,7 +123,7 @@ static void motor_1_task_fn() {
 static void motor_2_task_fn() {
 	Motor* motor = &motors[2];
 	scheduler_event_wait(EVENT_MOTOR_2_START);
-	motor->calibrate();
+//	motor->calibrate();
 	while (1) {
 		scheduler_event_wait(EVENT_MOTOR_2_PWM);
 		motor->update();
