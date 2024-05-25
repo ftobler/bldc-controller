@@ -21,22 +21,7 @@ constexpr int pwm_max_half = (PWM_MAX / 2) - 1;
 extern int16_t sintab[N];
 extern uint32_t adc_dma_results[4];
 
-//volatile static int32_t controller_p = 4;
-//volatile static int32_t controller_i = 0;
-volatile static int32_t controller_i_max = 200000;
 
-//static int absi(int i);
-
-
-
-Controller::Controller() {
-	target = 0;
-	encoder = 0;
-	controller_p = 0;
-	output = 0;
-}
-void Controller::update() {
-}
 
 Motor::Motor() {
 	coef_a = 1.75f;

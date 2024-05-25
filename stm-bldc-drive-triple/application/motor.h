@@ -15,17 +15,7 @@ constexpr uint32_t HISTORY_LEN = 128;
 
 void motor_sintab_init();
 
-class Controller {
-public:
-	int32_t target;
-	int32_t encoder;
-	int32_t controller_p;
-	int32_t output;
-	int8_t dma_index;
-	int32_t offset;
-	Controller();
-	void update();
-};
+
 
 class Motor {
 public:
@@ -36,21 +26,9 @@ public:
 	uint8_t has_control_d = 0;
 	uint8_t has_control_i = 0;
 
-//	int32_t target;
 	uint32_t calibrated = 0;
 	uint32_t max_pwm;
 	int32_t offset = 0; //0 position should be at mechanical zero
-//	int32_t encoder;
-//	int16_t encoder_history[HISTORY_LEN];
-//	uint16_t encoder_history_pos = 0;
-//	int16_t speed_filtered;
-//	int16_t speed_nerf = 0;
-
-//	int32_t controller_p;
-//	int32_t controller_i;
-//	int32_t last_encoder;
-//	int32_t _speed;
-//	int32_t speed_filter;
 
 	int32_t target;
 	int32_t encoder;
@@ -65,9 +43,6 @@ public:
 	float differentiator;
 	int32_t integrator;
 
-
-//	float coef_a = 0.0f;
-//	float coef_b = 0.0f;
 	float coef_a = 0.0f;
 	int32_t coef_b = 0;
 	Motor();
