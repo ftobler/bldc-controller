@@ -299,7 +299,9 @@ static void pick(float x, float y) {
 	app_target[0] = x;
 	app_target[1] = y;
 	wait_for();
+	scheduler_task_sleep(100);
 	grip();
+	scheduler_task_sleep(50);
 }
 
 static void place(float x, float y) {
@@ -324,7 +326,24 @@ static void release() {
 
 
 static void wait_for() {
-	wait_for_time(768);
+
+	int32_t diffmax = 0;
+	for (int i = 0; i < 3; i++) {
+		int32_t diff = motors[i].target - app_target[i];
+		if (diff < 0) {
+			diff = -diff;
+		}
+		if (diff > diffmax) {
+			diffmax = diff;
+		}
+	}
+	if (diffmax < 50) {
+		diffmax = 50;
+	}
+
+
+	wait_for_time(diffmax);
+
 	scheduler_task_sleep(256);
 }
 
