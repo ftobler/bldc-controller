@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.25" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.1" altunitdist="mm" altunit="mm"/>
+<grid distance="1" unitdist="mm" unit="mm" style="lines" multiple="1" display="no" altdistance="0.1" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="no" active="yes"/>
@@ -7132,7 +7132,7 @@ design rules under a new name.</description>
 <element name="U$3" library="ftobler" package="TSSOP20" value="DRV8300N" x="42.5" y="30.7" smashed="yes" rot="R90">
 <attribute name="NAME" x="43.135" y="28.9728" size="1.27" layer="27" ratio="6" rot="SR90"/>
 </element>
-<element name="Q1" library="ftobler" package="DFN3X3-8L" value="MOSFET_NHL60N04D" x="32" y="32" smashed="yes" rot="R270">
+<element name="Q1" library="ftobler" package="DFN3X3-8L" value="N_MOSFET_PDFN3x3" x="32" y="32" smashed="yes" rot="R270">
 <attribute name="NAME" x="32" y="29.46" size="0.889" layer="48" rot="R270"/>
 </element>
 <element name="D11" library="ftobler" package="SOD123" package3d_urn="urn:adsk.eagle:package:36806145/2" value="DIODESOD123" x="39.25" y="40" smashed="yes" rot="R90">
@@ -7156,19 +7156,19 @@ design rules under a new name.</description>
 <element name="C8" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="44.5" y="36" smashed="yes" rot="R315">
 <attribute name="NAME" x="45.038815625" y="36.5388125" size="1.016" layer="25" font="vector" ratio="12" rot="R315" align="bottom-center"/>
 </element>
-<element name="Q2" library="ftobler" package="DFN3X3-8L" value="MOSFET_NHL60N04D" x="25" y="32" smashed="yes" rot="R270">
+<element name="Q2" library="ftobler" package="DFN3X3-8L" value="N_MOSFET_PDFN3x3" x="25" y="32" smashed="yes" rot="R270">
 <attribute name="NAME" x="25" y="29.46" size="0.889" layer="48" rot="R270"/>
 </element>
-<element name="Q3" library="ftobler" package="DFN3X3-8L" value="MOSFET_NHL60N04D" x="18" y="32" smashed="yes" rot="R270">
+<element name="Q3" library="ftobler" package="DFN3X3-8L" value="N_MOSFET_PDFN3x3" x="18" y="32" smashed="yes" rot="R270">
 <attribute name="NAME" x="18" y="29.46" size="0.889" layer="48" rot="R270"/>
 </element>
-<element name="Q4" library="ftobler" package="DFN3X3-8L" value="MOSFET_NHL60N04D" x="32" y="38" smashed="yes" rot="R270">
+<element name="Q4" library="ftobler" package="DFN3X3-8L" value="N_MOSFET_PDFN3x3" x="32" y="38" smashed="yes" rot="R270">
 <attribute name="NAME" x="32" y="35.46" size="0.889" layer="48" rot="R270"/>
 </element>
-<element name="Q5" library="ftobler" package="DFN3X3-8L" value="MOSFET_NHL60N04D" x="25" y="38" smashed="yes" rot="R270">
+<element name="Q5" library="ftobler" package="DFN3X3-8L" value="N_MOSFET_PDFN3x3" x="25" y="38" smashed="yes" rot="R270">
 <attribute name="NAME" x="25" y="35.46" size="0.889" layer="48" rot="R270"/>
 </element>
-<element name="Q6" library="ftobler" package="DFN3X3-8L" value="MOSFET_NHL60N04D" x="18" y="38" smashed="yes" rot="R270">
+<element name="Q6" library="ftobler" package="DFN3X3-8L" value="N_MOSFET_PDFN3x3" x="18" y="38" smashed="yes" rot="R270">
 <attribute name="NAME" x="18" y="35.46" size="0.889" layer="48" rot="R270"/>
 </element>
 <element name="U1" library="ftobler" package="SOIC-8" package3d_urn="urn:adsk.eagle:package:37121609/2" value="AS5600" x="25" y="25" smashed="yes" rot="MR0">
@@ -7234,17 +7234,11 @@ design rules under a new name.</description>
 <element name="X9" library="bt_con-jst-xh" package="B6B-XH" package3d_urn="urn:adsk.eagle:package:36815122/2" value="06-JST-B6B-XH-A" x="33" y="3" smashed="yes">
 <attribute name="NAME" x="26.65" y="6.81" size="1.27" layer="21"/>
 </element>
-<element name="R17" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="37.65" y="9" smashed="yes">
-<attribute name="NAME" x="37.65" y="9.762" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
-</element>
 <element name="R18" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="37.65" y="7.75" smashed="yes" rot="R180">
 <attribute name="NAME" x="37.65" y="6.988" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
 </element>
 <element name="C20" library="passives" package="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n" x="37.65" y="10.25" smashed="yes" rot="R180">
 <attribute name="NAME" x="37.65" y="9.488" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
-</element>
-<element name="R19" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="35.4" y="9" smashed="yes">
-<attribute name="NAME" x="35.4" y="9.762" size="1.016" layer="25" font="vector" ratio="12" align="bottom-center"/>
 </element>
 <element name="R20" library="passives" package="0603-RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k" x="35.4" y="7.75" smashed="yes" rot="R180">
 <attribute name="NAME" x="35.4" y="6.988" size="1.016" layer="25" font="vector" ratio="12" rot="R180" align="bottom-center"/>
@@ -7358,9 +7352,7 @@ design rules under a new name.</description>
 <contactref element="U3" pad="5"/>
 <contactref element="U2" pad="5"/>
 <contactref element="X9" pad="P$6"/>
-<contactref element="R17" pad="1"/>
 <contactref element="C20" pad="2"/>
-<contactref element="R19" pad="1"/>
 <contactref element="C21" pad="2"/>
 <contactref element="R3" pad="1"/>
 <contactref element="C28" pad="2"/>
@@ -7620,8 +7612,6 @@ design rules under a new name.</description>
 <wire x1="34.75" y1="10.25" x2="34" y2="10.25" width="0.3" layer="1"/>
 <via x="34" y="10.25" extent="1-16" drill="0.3"/>
 <wire x1="34" y1="11.35" x2="34" y2="10.25" width="0.3" layer="1"/>
-<wire x1="34.75" y1="10.25" x2="34.75" y2="9" width="0.3" layer="1"/>
-<wire x1="37" y1="10.25" x2="37" y2="9" width="0.3" layer="1"/>
 <wire x1="37" y1="10.25" x2="37" y2="11.15" width="0.3" layer="1"/>
 <via x="37" y="11.15" extent="1-16" drill="0.3"/>
 <wire x1="40.55" y1="10.25" x2="40.55" y2="11.15" width="0.3" layer="1"/>
@@ -7858,7 +7848,17 @@ design rules under a new name.</description>
 <wire x1="25.635" y1="24.265" x2="26.35466875" y2="24.265" width="0.3" layer="16"/>
 <wire x1="26.35466875" y1="24.265" x2="26.905" y2="23.71466875" width="0.3" layer="16"/>
 <wire x1="26.905" y1="23.71466875" x2="26.905" y2="22.3838" width="0.3" layer="16"/>
+<contactref element="U4" pad="8"/>
+<contactref element="C25" pad="1"/>
+<wire x1="1.25" y1="18.1" x2="2.5788" y2="18.1" width="0.3" layer="1"/>
+<wire x1="2.5788" y1="18.1" x2="2.595" y2="18.1162" width="0.3" layer="1"/>
+<wire x1="2.595" y1="18.1162" x2="2.595" y2="18.995" width="0.3" layer="1"/>
+<wire x1="2.595" y1="18.995" x2="4.15" y2="20.55" width="0.3" layer="1"/>
+<wire x1="4.15" y1="20.55" x2="12.65" y2="20.55" width="0.3" layer="1"/>
+<wire x1="12.65" y1="20.55" x2="13.2" y2="20" width="0.3" layer="1"/>
+<wire x1="13.2" y1="20" x2="13.2" y2="15.72" width="0.3" layer="1"/>
 <wire x1="31.5" y1="19.7" x2="31.65" y2="19.55" width="0" layer="19" extent="1-1"/>
+<wire x1="13.2" y1="15.72" x2="17.2" y2="13.9" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="NRST">
 <contactref element="X5" pad="4"/>
@@ -7906,8 +7906,6 @@ design rules under a new name.</description>
 <contactref element="U7" pad="2"/>
 <contactref element="U7" pad="2@1"/>
 <contactref element="C22" pad="1"/>
-<contactref element="U4" pad="8"/>
-<contactref element="C25" pad="1"/>
 <contactref element="C26" pad="1"/>
 <contactref element="C30" pad="1"/>
 <wire x1="24.85" y1="12.25" x2="23.655" y2="13.445" width="0.3" layer="1"/>
@@ -7915,13 +7913,6 @@ design rules under a new name.</description>
 <wire x1="29.1" y1="12.25" x2="29.1" y2="12.55" width="0.3" layer="1"/>
 <wire x1="29.405" y1="12.855" x2="29.1" y2="12.55" width="0.3" layer="1"/>
 <wire x1="29.405" y1="12.855" x2="29.405" y2="14.3838" width="0.3" layer="1"/>
-<wire x1="1.25" y1="18.1" x2="2.5788" y2="18.1" width="0.3" layer="1"/>
-<wire x1="2.5788" y1="18.1" x2="2.595" y2="18.1162" width="0.3" layer="1"/>
-<wire x1="2.595" y1="18.1162" x2="2.595" y2="18.995" width="0.3" layer="1"/>
-<wire x1="2.595" y1="18.995" x2="4.15" y2="20.55" width="0.3" layer="1"/>
-<wire x1="4.15" y1="20.55" x2="12.65" y2="20.55" width="0.3" layer="1"/>
-<wire x1="12.65" y1="20.55" x2="13.2" y2="20" width="0.3" layer="1"/>
-<wire x1="13.2" y1="20" x2="13.2" y2="15.72" width="0.3" layer="1"/>
 <wire x1="15.7" y1="13.9" x2="16.3" y2="15.1" width="0.5" layer="1"/>
 <wire x1="16.3" y1="15.1" x2="16.45" y2="16.023" width="0.5" layer="1"/>
 <wire x1="16.45" y1="18.44" x2="16.45" y2="16.023" width="0.5" layer="1"/>
@@ -7935,7 +7926,6 @@ design rules under a new name.</description>
 <wire x1="12.25" y1="13.9" x2="12.999" y2="15.519" width="0.5" layer="1"/>
 <wire x1="12.999" y1="15.519" x2="13.75" y2="13.9" width="0.5" layer="1"/>
 <wire x1="28.65" y1="17.35" x2="23.655" y2="17.35" width="0.3" layer="1"/>
-<wire x1="13.2" y1="15.72" x2="12.999" y2="15.519" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="I2C2_SDA">
 <contactref element="U5" pad="34"/>
@@ -8819,30 +8809,26 @@ design rules under a new name.</description>
 <via x="11.75" y="10.75" extent="1-16" drill="0.3"/>
 </signal>
 <signal name="N$41">
-<contactref element="R17" pad="2"/>
 <contactref element="R18" pad="1"/>
 <contactref element="C20" pad="1"/>
 <contactref element="U5" pad="19"/>
 <wire x1="36" y1="13.04415" x2="36" y2="13.6533" width="0.15" layer="1"/>
 <wire x1="38.3" y1="10.25" x2="38.3" y2="10.2" width="0.15" layer="1"/>
-<wire x1="38.3" y1="10.2" x2="38.3" y2="9" width="0.15" layer="1"/>
-<wire x1="38.3" y1="9" x2="38.3" y2="7.75" width="0.15" layer="1"/>
 <wire x1="36" y1="13.04415" x2="36" y2="12.2" width="0.15" layer="1"/>
 <wire x1="38.3" y1="11.1" x2="38.3" y2="10.25" width="0.15" layer="1"/>
 <wire x1="36" y1="12.2" x2="36.5" y2="11.7" width="0.15" layer="1"/>
 <wire x1="36.5" y1="11.7" x2="37.7" y2="11.7" width="0.15" layer="1"/>
 <wire x1="37.7" y1="11.7" x2="38.3" y2="11.1" width="0.15" layer="1"/>
+<wire x1="38.3" y1="10.25" x2="38.3" y2="7.75" width="0.15" layer="1"/>
 </signal>
 <signal name="N$42">
-<contactref element="R19" pad="2"/>
 <contactref element="R20" pad="1"/>
 <contactref element="C21" pad="1"/>
 <contactref element="U5" pad="18"/>
-<wire x1="36.05" y1="10.25" x2="36.05" y2="9" width="0.15" layer="1"/>
-<wire x1="36.05" y1="9" x2="36.05" y2="7.75" width="0.15" layer="1"/>
 <wire x1="35.5" y1="13.04415" x2="35.5" y2="12.05" width="0.15" layer="1"/>
 <wire x1="36.05" y1="11.5" x2="36.05" y2="10.25" width="0.15" layer="1"/>
 <wire x1="35.5" y1="12.05" x2="36.05" y2="11.5" width="0.15" layer="1"/>
+<wire x1="36.05" y1="10.25" x2="36.05" y2="7.75" width="0.15" layer="1"/>
 </signal>
 <signal name="N$43">
 <contactref element="R18" pad="2"/>

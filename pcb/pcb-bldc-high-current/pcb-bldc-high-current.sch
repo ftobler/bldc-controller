@@ -20529,18 +20529,18 @@ Source: www.rsonline.de .. SMBJ12/C/15/C/24/C/30/C/5.0/C/7.5/C Voltage Suppresso
 <part name="U$1" library="ftobler" deviceset="LOGO" device="-TOBENG-1MM-FINISH"/>
 <part name="U$2" library="ftobler" deviceset="LOGO" device="-TOBENG-4MM-MASK"/>
 <part name="U$3" library="ftobler" deviceset="DRV8300" device="" value="DRV8300N"/>
-<part name="Q1" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="MOSFET_NHL60N04D"/>
+<part name="Q1" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="N_MOSFET_PDFN3x3"/>
 <part name="D11" library="ftobler" deviceset="DIODE" device="SOD123" package3d_urn="urn:adsk.eagle:package:36806145/2"/>
 <part name="D6" library="ftobler" deviceset="DIODE" device="SOD123" package3d_urn="urn:adsk.eagle:package:36806145/2"/>
 <part name="D7" library="ftobler" deviceset="DIODE" device="SOD123" package3d_urn="urn:adsk.eagle:package:36806145/2"/>
 <part name="C1" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="C7" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
 <part name="C8" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
-<part name="Q2" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="MOSFET_NHL60N04D"/>
-<part name="Q3" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="MOSFET_NHL60N04D"/>
-<part name="Q4" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="MOSFET_NHL60N04D"/>
-<part name="Q5" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="MOSFET_NHL60N04D"/>
-<part name="Q6" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="MOSFET_NHL60N04D"/>
+<part name="Q2" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="N_MOSFET_PDFN3x3"/>
+<part name="Q3" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="N_MOSFET_PDFN3x3"/>
+<part name="Q4" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="N_MOSFET_PDFN3x3"/>
+<part name="Q5" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="N_MOSFET_PDFN3x3"/>
+<part name="Q6" library="ftobler" deviceset="MOSFET_N" device="HL60N04D" value="N_MOSFET_PDFN3x3"/>
 <part name="GND2" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
@@ -20586,17 +20586,12 @@ Source: www.rsonline.de .. SMBJ12/C/15/C/24/C/30/C/5.0/C/7.5/C Voltage Suppresso
 <part name="+3V4" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="P+8" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="P+9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
-<part name="P+11" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+5V" device=""/>
 <part name="GND32" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R17" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="R18" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="C20" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
-<part name="GND33" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND34" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
-<part name="R19" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="R20" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="C21" library="passives" deviceset="CAPACITOR" device="0603_CAP" package3d_urn="urn:adsk.eagle:package:36813215/3" value="100n"/>
-<part name="GND35" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="GND36" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="R3" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="10k"/>
 <part name="R4" library="passives" deviceset="RESISTOR" device="0603_RES" package3d_urn="urn:adsk.eagle:package:36812383/4" value="100k"/>
@@ -20640,6 +20635,7 @@ Source: www.rsonline.de .. SMBJ12/C/15/C/24/C/30/C/5.0/C/7.5/C Voltage Suppresso
 <part name="+3V5" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 <part name="GND43" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="GND" device=""/>
 <part name="X1" library="ftobler-conn" deviceset="PIN_3X2" device="HD"/>
+<part name="+3V9" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="+3V3" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -21075,47 +21071,30 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 <instance part="P+9" gate="1" x="205.74" y="83.82" smashed="yes">
 <attribute name="VALUE" x="203.2" y="78.74" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="P+11" gate="1" x="76.2" y="370.84" smashed="yes">
-<attribute name="VALUE" x="73.66" y="365.76" size="1.778" layer="96" rot="R90"/>
-</instance>
 <instance part="GND32" gate="1" x="76.2" y="332.74" smashed="yes">
 <attribute name="VALUE" x="73.66" y="330.2" size="1.778" layer="96"/>
 </instance>
-<instance part="R17" gate="G$1" x="106.68" y="335.28" smashed="yes" rot="R90">
-<attribute name="NAME" x="105.1814" y="331.47" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="109.982" y="331.47" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="R18" gate="G$1" x="106.68" y="345.44" smashed="yes" rot="R90">
-<attribute name="NAME" x="105.1814" y="341.63" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="109.982" y="341.63" size="1.778" layer="96" rot="R90"/>
+<instance part="R18" gate="G$1" x="109.22" y="340.36" smashed="yes" rot="R180">
+<attribute name="NAME" x="113.03" y="338.8614" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="113.03" y="343.662" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="C20" gate="G$1" x="116.84" y="335.28" smashed="yes">
 <attribute name="NAME" x="114.554" y="334.01" size="1.778" layer="95" ratio="12" rot="R90" align="bottom-center"/>
 <attribute name="VALUE" x="119.126" y="334.01" size="1.778" layer="96" ratio="12" rot="R270" align="bottom-center"/>
 </instance>
-<instance part="GND33" gate="1" x="106.68" y="327.66" smashed="yes">
-<attribute name="VALUE" x="104.14" y="325.12" size="1.778" layer="96"/>
-</instance>
 <instance part="GND34" gate="1" x="116.84" y="327.66" smashed="yes">
 <attribute name="VALUE" x="114.3" y="325.12" size="1.778" layer="96"/>
 </instance>
-<instance part="R19" gate="G$1" x="139.7" y="337.82" smashed="yes" rot="R90">
-<attribute name="NAME" x="138.2014" y="334.01" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="143.002" y="334.01" size="1.778" layer="96" rot="R90"/>
+<instance part="R20" gate="G$1" x="139.7" y="360.68" smashed="yes" rot="R180">
+<attribute name="NAME" x="143.51" y="359.1814" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="143.51" y="363.982" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="R20" gate="G$1" x="139.7" y="347.98" smashed="yes" rot="R90">
-<attribute name="NAME" x="138.2014" y="344.17" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="143.002" y="344.17" size="1.778" layer="96" rot="R90"/>
+<instance part="C21" gate="G$1" x="149.86" y="355.6" smashed="yes">
+<attribute name="NAME" x="147.574" y="354.33" size="1.778" layer="95" ratio="12" rot="R90" align="bottom-center"/>
+<attribute name="VALUE" x="152.146" y="354.33" size="1.778" layer="96" ratio="12" rot="R270" align="bottom-center"/>
 </instance>
-<instance part="C21" gate="G$1" x="149.86" y="337.82" smashed="yes">
-<attribute name="NAME" x="147.574" y="336.55" size="1.778" layer="95" ratio="12" rot="R90" align="bottom-center"/>
-<attribute name="VALUE" x="152.146" y="336.55" size="1.778" layer="96" ratio="12" rot="R270" align="bottom-center"/>
-</instance>
-<instance part="GND35" gate="1" x="139.7" y="330.2" smashed="yes">
-<attribute name="VALUE" x="137.16" y="327.66" size="1.778" layer="96"/>
-</instance>
-<instance part="GND36" gate="1" x="149.86" y="330.2" smashed="yes">
-<attribute name="VALUE" x="147.32" y="327.66" size="1.778" layer="96"/>
+<instance part="GND36" gate="1" x="149.86" y="347.98" smashed="yes">
+<attribute name="VALUE" x="147.32" y="345.44" size="1.778" layer="96"/>
 </instance>
 <instance part="R3" gate="G$1" x="228.6" y="294.64" smashed="yes" rot="R90">
 <attribute name="NAME" x="227.1014" y="290.83" size="1.778" layer="95" rot="R90"/>
@@ -21258,6 +21237,9 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 </instance>
 <instance part="X1" gate="G$1" x="403.86" y="215.9" smashed="yes">
 <attribute name="NAME" x="401.32" y="218.44" size="1.778" layer="94" align="center-left"/>
+</instance>
+<instance part="+3V9" gate="G$1" x="76.2" y="370.84" smashed="yes" rot="MR0">
+<attribute name="VALUE" x="78.74" y="368.3" size="1.778" layer="96" rot="MR90"/>
 </instance>
 </instances>
 <busses>
@@ -21439,16 +21421,8 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 <wire x1="172.72" y1="93.98" x2="172.72" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="R17" gate="G$1" pin="1"/>
-<pinref part="GND33" gate="1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="C20" gate="G$1" pin="2"/>
 <pinref part="GND34" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="R19" gate="G$1" pin="1"/>
-<pinref part="GND35" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="C21" gate="G$1" pin="2"/>
@@ -21705,6 +21679,17 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 <pinref part="R9" gate="G$1" pin="2"/>
 <wire x1="251.46" y1="157.48" x2="251.46" y2="154.94" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<wire x1="73.66" y1="350.52" x2="76.2" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="350.52" x2="76.2" y2="365.76" width="0.1524" layer="91"/>
+<pinref part="U4" gate="G$1" pin="VCC"/>
+<pinref part="C25" gate="G$1" pin="1"/>
+<wire x1="83.82" y1="363.22" x2="83.82" y2="365.76" width="0.1524" layer="91"/>
+<wire x1="83.82" y1="365.76" x2="76.2" y2="365.76" width="0.1524" layer="91"/>
+<pinref part="+3V9" gate="G$1" pin="+3V3"/>
+<wire x1="76.2" y1="368.3" x2="76.2" y2="365.76" width="0.1524" layer="91"/>
+<junction x="76.2" y="365.76"/>
+</segment>
 </net>
 <net name="NRST" class="0">
 <segment>
@@ -21761,17 +21746,6 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 <pinref part="U3" gate="G$1" pin="VCC"/>
 <wire x1="205.74" y1="78.74" x2="208.28" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="P+9" gate="1" pin="+5V"/>
-</segment>
-<segment>
-<wire x1="73.66" y1="350.52" x2="76.2" y2="350.52" width="0.1524" layer="91"/>
-<pinref part="P+11" gate="1" pin="+5V"/>
-<wire x1="76.2" y1="350.52" x2="76.2" y2="365.76" width="0.1524" layer="91"/>
-<pinref part="U4" gate="G$1" pin="VCC"/>
-<pinref part="C25" gate="G$1" pin="1"/>
-<wire x1="76.2" y1="365.76" x2="76.2" y2="368.3" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="363.22" x2="83.82" y2="365.76" width="0.1524" layer="91"/>
-<wire x1="83.82" y1="365.76" x2="76.2" y2="365.76" width="0.1524" layer="91"/>
-<junction x="76.2" y="365.76"/>
 </segment>
 <segment>
 <pinref part="U6" gate="G$1" pin="VOUT"/>
@@ -22243,34 +22217,26 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 </net>
 <net name="N$41" class="0">
 <segment>
-<pinref part="R17" gate="G$1" pin="2"/>
 <pinref part="R18" gate="G$1" pin="1"/>
-<wire x1="106.68" y1="340.36" x2="116.84" y2="340.36" width="0.1524" layer="91"/>
-<junction x="106.68" y="340.36"/>
+<wire x1="114.3" y1="340.36" x2="116.84" y2="340.36" width="0.1524" layer="91"/>
 <pinref part="C20" gate="G$1" pin="1"/>
 <wire x1="116.84" y1="340.36" x2="116.84" y2="337.82" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="340.36" x2="129.54" y2="340.36" width="0.1524" layer="91"/>
 <junction x="116.84" y="340.36"/>
-<wire x1="129.54" y1="340.36" x2="129.54" y2="325.12" width="0.1524" layer="91"/>
-<wire x1="129.54" y1="325.12" x2="269.24" y2="325.12" width="0.1524" layer="91"/>
-<wire x1="269.24" y1="325.12" x2="269.24" y2="248.92" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="340.36" x2="269.24" y2="340.36" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="340.36" x2="269.24" y2="248.92" width="0.1524" layer="91"/>
 <pinref part="U5" gate="A" pin="PA2"/>
 <wire x1="307.34" y1="248.92" x2="269.24" y2="248.92" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$42" class="0">
 <segment>
-<pinref part="R19" gate="G$1" pin="2"/>
 <pinref part="R20" gate="G$1" pin="1"/>
-<wire x1="139.7" y1="342.9" x2="149.86" y2="342.9" width="0.1524" layer="91"/>
-<junction x="139.7" y="342.9"/>
+<wire x1="144.78" y1="360.68" x2="149.86" y2="360.68" width="0.1524" layer="91"/>
 <pinref part="C21" gate="G$1" pin="1"/>
-<wire x1="149.86" y1="342.9" x2="149.86" y2="340.36" width="0.1524" layer="91"/>
-<wire x1="149.86" y1="342.9" x2="160.02" y2="342.9" width="0.1524" layer="91"/>
-<junction x="149.86" y="342.9"/>
-<wire x1="160.02" y1="342.9" x2="160.02" y2="327.66" width="0.1524" layer="91"/>
-<wire x1="160.02" y1="327.66" x2="271.78" y2="327.66" width="0.1524" layer="91"/>
-<wire x1="271.78" y1="327.66" x2="271.78" y2="251.46" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="360.68" x2="149.86" y2="358.14" width="0.1524" layer="91"/>
+<junction x="149.86" y="360.68"/>
+<wire x1="149.86" y1="360.68" x2="271.78" y2="360.68" width="0.1524" layer="91"/>
+<wire x1="271.78" y1="360.68" x2="271.78" y2="251.46" width="0.1524" layer="91"/>
 <pinref part="U5" gate="A" pin="PA1"/>
 <wire x1="271.78" y1="251.46" x2="307.34" y2="251.46" width="0.1524" layer="91"/>
 </segment>
@@ -22278,20 +22244,18 @@ Crosschip CC6920BSO-50A (3.3V)</text>
 <net name="N$43" class="0">
 <segment>
 <wire x1="73.66" y1="345.44" x2="99.06" y2="345.44" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="345.44" x2="99.06" y2="353.06" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="345.44" x2="99.06" y2="340.36" width="0.1524" layer="91"/>
 <pinref part="R18" gate="G$1" pin="2"/>
-<wire x1="99.06" y1="353.06" x2="106.68" y2="353.06" width="0.1524" layer="91"/>
-<wire x1="106.68" y1="353.06" x2="106.68" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="340.36" x2="104.14" y2="340.36" width="0.1524" layer="91"/>
 <pinref part="U4" gate="G$1" pin="VZCR"/>
 </segment>
 </net>
 <net name="N$44" class="0">
 <segment>
-<wire x1="73.66" y1="347.98" x2="96.52" y2="347.98" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="347.98" x2="96.52" y2="355.6" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="347.98" x2="99.06" y2="347.98" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="347.98" x2="99.06" y2="360.68" width="0.1524" layer="91"/>
 <pinref part="R20" gate="G$1" pin="2"/>
-<wire x1="96.52" y1="355.6" x2="139.7" y2="355.6" width="0.1524" layer="91"/>
-<wire x1="139.7" y1="355.6" x2="139.7" y2="353.06" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="360.68" x2="134.62" y2="360.68" width="0.1524" layer="91"/>
 <pinref part="U4" gate="G$1" pin="OUT"/>
 </segment>
 </net>
