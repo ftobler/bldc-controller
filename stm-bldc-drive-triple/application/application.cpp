@@ -314,21 +314,23 @@ static void place(float x, float y) {
 static void grip() {
 	app_target[2] = down;
 	wait_for_fast();
+	scheduler_task_sleep(300);
 	app_target[2] = hold;
 	wait_for_fast();
 }
 static void release() {
 	app_target[2] = up;
 	wait_for_fast();
+	scheduler_task_sleep(150);
 	app_target[2] = hold;
-	wait_for_fast();
+//	wait_for_fast();
 }
 
 
 static void wait_for() {
 
 	int32_t diffmax = 0;
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 2; i++) {  //omit calculation for z motor here. (it can go fast)
 		int32_t diff = motors[i].target - app_target[i];
 		if (diff < 0) {
 			diff = -diff;
@@ -340,16 +342,18 @@ static void wait_for() {
 	if (diffmax < 50) {
 		diffmax = 50;
 	}
+	if (diffmax > 600) {
+		diffmax = 600;
+	}
 
 
 	wait_for_time(diffmax);
 
-	scheduler_task_sleep(256);
+	scheduler_task_sleep(300);
 }
 
 static void wait_for_fast() {
 	wait_for_time(75);
-	scheduler_task_sleep(50);
 }
 
 
@@ -367,7 +371,6 @@ static void wait_for_time(int ms) {
 		}
 		scheduler_task_sleep(1);
 	}
-	scheduler_task_sleep(100);
 }
 
 static void wait_for_linear() {
